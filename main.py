@@ -1,15 +1,19 @@
 import os
 import platform
 import subprocess
-import time
 import threading
+import time
 from ipaddress import ip_address
 from pprint import pprint
+
 from tabulate import tabulate
 
-result = {'Доступные узлы': "", "Недоступные узлы": ""}  # словарь с результатами
+result = {
+    "Доступные узлы": "",
+    "Недоступные узлы": "",
+}  # словарь с результатами
 
-DNULL = open(os.devnull, 'w')  # заглушка, чтобы поток не выводился на экран
+DNULL = open(os.devnull, "w")  # заглушка, чтобы поток не выводился на экран
 
 
 def check_is_ipaddress(value):
@@ -22,14 +26,13 @@ def check_is_ipaddress(value):
     try:
         ipv4 = ip_address(value)
     except ValueError:
-        raise Exception('Некорректный ip адрес')
+        raise Exception("Некорректный ip адрес")
     return ipv4
 
 
 def ping(ipv4, result, get_list):
-    param = '-n' if platform.system().lower() == 'windows' else '-c'
-    response = subprocess.Popen(["ping", param, '1', '-w', '1', str(ipv4)],
-                                stdout=subprocess.PIPE)
+    param = "-n" if platform.system().lower() == "windows" else "-c"
+    response = subprocess.Popen(["ping", param, "1", "-w", "1", str(ipv4)], stdout=subprocess.PIPE)
     if response.wait() == 0:
         result["Доступные узлы"] += f"{ipv4}, "
         res = f"{ipv4} - Узел доступен"
@@ -57,7 +60,7 @@ def host_ping(hosts_list, get_list=False):
         try:
             ipv4 = check_is_ipaddress(host)
         except Exception as e:
-            print(f'{host} - {e} воспринимаю как доменное имя')
+            print(f"{host} - {e} воспринимаю как доменное имя")
             ipv4 = host
 
         thread = threading.Thread(target=ping, args=(ipv4, result, get_list), daemon=True)
@@ -85,7 +88,7 @@ def host_range_ping(get_list=False):
         start_ip = input("Введите первоначальный адрес: ")  # запрос первоначального адреса
         try:
             ipv4_start = check_is_ipaddress(start_ip)
-            last_oct = int(start_ip.split('.')[3])  # смотрим чему равен последний октет
+            last_oct = int(start_ip.split(".")[3])  # смотрим чему равен последний октет
             break
         except Exception as e:
             print(e)
@@ -95,8 +98,7 @@ def host_range_ping(get_list=False):
             print("Необходимо ввести число")
         else:
             if (last_oct + int(end_ip)) > 255 + 1:  # По условию меняется только последний октет
-                print(f"Можем менять только последний октет, "
-                      f"т.е. максимальное число хостов {255 + 1 - last_oct}")
+                print(f"Можем менять только последний октет, " f"т.е. максимальное число хостов {255 + 1 - last_oct}")
             else:
                 break
     host_list = []
@@ -109,24 +111,37 @@ def host_range_ping(get_list=False):
 
 def host_range_ping_tab():
     """
-        Запрос диапазона ip адресов, проверка их доступности, вывод результатов в табличном виде
-        :param
-        :return:
+    Запрос диапазона ip адресов, проверка их доступности, вывод результатов в табличном виде
+    :param
+    :return:
     """
     res_dict = host_range_ping(True)  # Запрашиваем хосты, проверяем доступность, получаем словарь
     print()
-    print(tabulate([res_dict], headers='keys', tablefmt='pipe', stralign='center'))
+    print(tabulate([res_dict], headers="keys", tablefmt="pipe", stralign="center"))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # список проверяемых хостов
-    hosts_list = ['192.168.8.1', '8.8.8.8', 'yandex.ru', 'google.com',
-                  '0.0.0.1', '0.0.0.2', '0.0.0.3', '0.0.0.4', '0.0.0.5',
-                  '0.0.0.6', '0.0.0.7', '0.0.0.8', '0.0.0.9', '0.0.1.0']
+    hosts_list = [
+        "192.168.8.1",
+        "8.8.8.8",
+        "yandex.ru",
+        "google.com",
+        "0.0.0.1",
+        "0.0.0.2",
+        "0.0.0.3",
+        "0.0.0.4",
+        "0.0.0.5",
+        "0.0.0.6",
+        "0.0.0.7",
+        "0.0.0.8",
+        "0.0.0.9",
+        "0.0.1.0",
+    ]
     start = time.time()
     host_ping(hosts_list)
     end = time.time()
-    print(f'total time: {int(end - start)}')
+    print(f"total time: {int(end - start)}")
     pprint(result)
 
     host_range_ping_tab()
