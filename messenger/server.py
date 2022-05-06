@@ -5,19 +5,16 @@ import logging
 import os
 import select
 import socket
-import sys
 import threading
 import time
 
 import logs.config_server_log
+from common.decos import log
 from common.utils import *
 from common.variables import *
-from decos import log
 from descrptrs import Port
-from errors import IncorrectDataRecivedError
 from metaclasses import ServerMaker
 from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QStandardItem, QStandardItemModel
 from PyQt5.QtWidgets import QApplication, QMessageBox
 from server_database import ServerStorage
 from server_gui import (
