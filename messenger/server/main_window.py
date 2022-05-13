@@ -1,13 +1,6 @@
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
-from PyQt5.QtWidgets import (
-    QAction,
-    QApplication,
-    QLabel,
-    QMainWindow,
-    QTableView,
-    qApp,
-)
+from PyQt5.QtWidgets import QAction, QApplication, QLabel, QMainWindow, QTableView, qApp
 from server.add_user import RegisterUser
 from server.config_window import ConfigWindow
 from server.remove_user import DelUserDialog

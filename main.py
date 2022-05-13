@@ -32,17 +32,23 @@ def check_is_ipaddress(value):
 
 def ping(ipv4, result, get_list):
     param = "-n" if platform.system().lower() == "windows" else "-c"
-    response = subprocess.Popen(["ping", param, "1", "-w", "1", str(ipv4)], stdout=subprocess.PIPE)
+    response = subprocess.Popen(
+        ["ping", param, "1", "-w", "1", str(ipv4)], stdout=subprocess.PIPE
+    )
     if response.wait() == 0:
         result["Доступные узлы"] += f"{ipv4}, "
         res = f"{ipv4} - Узел доступен"
-        if not get_list:  # если результаты не надо добавлять в словарь, значит отображаем
+        if (
+            not get_list
+        ):  # если результаты не надо добавлять в словарь, значит отображаем
             print(res)
         return res
     else:
         result["Недоступные узлы"] += f"{ipv4}, "
         res = f"{str(ipv4)} - Узел недоступен"
-        if not get_list:  # если результаты не надо добавлять в словарь, значит отображаем
+        if (
+            not get_list
+        ):  # если результаты не надо добавлять в словарь, значит отображаем
             print(res)
         return res
 
@@ -63,14 +69,18 @@ def host_ping(hosts_list, get_list=False):
             print(f"{host} - {e} воспринимаю как доменное имя")
             ipv4 = host
 
-        thread = threading.Thread(target=ping, args=(ipv4, result, get_list), daemon=True)
+        thread = threading.Thread(
+            target=ping, args=(ipv4, result, get_list), daemon=True
+        )
         thread.start()
         threads.append(thread)
 
     for thread in threads:
         thread.join()
 
-    if get_list:  # если требуется вернуть словарь (для задачи №3), то возвращаем
+    if (
+        get_list
+    ):  # если требуется вернуть словарь (для задачи №3), то возвращаем
         return result
 
 
@@ -85,24 +95,37 @@ def host_range_ping(get_list=False):
     """
 
     while True:
-        start_ip = input("Введите первоначальный адрес: ")  # запрос первоначального адреса
+        start_ip = input(
+            "Введите первоначальный адрес: "
+        )  # запрос первоначального адреса
         try:
             ipv4_start = check_is_ipaddress(start_ip)
-            last_oct = int(start_ip.split(".")[3])  # смотрим чему равен последний октет
+            last_oct = int(
+                start_ip.split(".")[3]
+            )  # смотрим чему равен последний октет
             break
         except Exception as e:
             print(e)
     while True:
-        end_ip = input("Сколько адресов проверить?: ")  # Запрос на количество проверяемых адресов
+        end_ip = input(
+            "Сколько адресов проверить?: "
+        )  # Запрос на количество проверяемых адресов
         if not end_ip.isnumeric():
             print("Необходимо ввести число")
         else:
-            if (last_oct + int(end_ip)) > 255 + 1:  # По условию меняется только последний октет
-                print(f"Можем менять только последний октет, " f"т.е. максимальное число хостов {255 + 1 - last_oct}")
+            if (
+                last_oct + int(end_ip)
+            ) > 255 + 1:  # По условию меняется только последний октет
+                print(
+                    f"Можем менять только последний октет, "
+                    f"т.е. максимальное число хостов {255 + 1 - last_oct}"
+                )
             else:
                 break
     host_list = []
-    [host_list.append(str(ipv4_start + x)) for x in range(int(end_ip))]  # формируем список ip
+    [
+        host_list.append(str(ipv4_start + x)) for x in range(int(end_ip))
+    ]  # формируем список ip
     if not get_list:  # передаём список в функцию из задания #1 для проверки
         host_ping(host_list)
     else:
@@ -115,9 +138,13 @@ def host_range_ping_tab():
     :param
     :return:
     """
-    res_dict = host_range_ping(True)  # Запрашиваем хосты, проверяем доступность, получаем словарь
+    res_dict = host_range_ping(
+        True
+    )  # Запрашиваем хосты, проверяем доступность, получаем словарь
     print()
-    print(tabulate([res_dict], headers="keys", tablefmt="pipe", stralign="center"))
+    print(
+        tabulate([res_dict], headers="keys", tablefmt="pipe", stralign="center")
+    )
 
 
 if __name__ == "__main__":
