@@ -21,7 +21,9 @@ logger = logging.getLogger("server_dist")
 @log
 def arg_parser(default_port, default_address):
     """Парсер аргументов коммандной строки."""
-    logger.debug(f"Инициализация парсера аргументов коммандной строки: {sys.argv}")
+    logger.debug(
+        f"Инициализация парсера аргументов коммандной строки: {sys.argv}"
+    )
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", default=default_port, type=int, nargs="?")
     parser.add_argument("-a", default=default_address, nargs="?")

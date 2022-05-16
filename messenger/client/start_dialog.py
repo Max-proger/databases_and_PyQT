@@ -1,11 +1,4 @@
-from PyQt5.QtWidgets import (
-    QApplication,
-    QDialog,
-    QLabel,
-    QLineEdit,
-    QPushButton,
-    qApp,
-)
+from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QLineEdit, QPushButton, qApp
 
 
 class UserNameDialog(QDialog):

@@ -129,6 +129,10 @@ class ConfigWindow(QDialog):
                 dir_path = os.path.join(dir_path, "..")
                 with open(f"{dir_path}/{'server_dist+++.ini'}", "w") as conf:
                     self.config.write(conf)
-                    message.information(self, "OK", "Настройки успешно сохранены!")
+                    message.information(
+                        self, "OK", "Настройки успешно сохранены!"
+                    )
             else:
-                message.warning(self, "Ошибка", "Порт должен быть от 1024 до 65536")
+                message.warning(
+                    self, "Ошибка", "Порт должен быть от 1024 до 65536"
+                )

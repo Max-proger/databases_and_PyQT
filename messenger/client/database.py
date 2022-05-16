@@ -106,7 +106,11 @@ class ClientDatabase:
 
     # Функция добавления контактов
     def add_contact(self, contact):
-        if not self.session.query(self.Contacts).filter_by(name=contact).count():
+        if (
+            not self.session.query(self.Contacts)
+            .filter_by(name=contact)
+            .count()
+        ):
             contact_row = self.Contacts(contact)
             self.session.add(contact_row)
             self.session.commit()
@@ -133,11 +137,17 @@ class ClientDatabase:
 
     # Функция, возвращающая контакты
     def get_contacts(self):
-        return [contact[0] for contact in self.session.query(self.Contacts.name).all()]
+        return [
+            contact[0]
+            for contact in self.session.query(self.Contacts.name).all()
+        ]
 
     # Функция, возвращающая список известных пользователей
     def get_users(self):
-        return [user[0] for user in self.session.query(self.KnownUsers.username).all()]
+        return [
+            user[0]
+            for user in self.session.query(self.KnownUsers.username).all()
+        ]
 
     # Функция, проверяющая наличие пользователя в известных
     def check_user(self, user):
@@ -155,7 +165,9 @@ class ClientDatabase:
 
     # Функция, возвращающая историю переписки
     def get_history(self, contact):
-        query = self.session.query(self.MessageHistory).filter_by(contact=contact)
+        query = self.session.query(self.MessageHistory).filter_by(
+            contact=contact
+        )
         return [
             (
                 history_row.contact,

@@ -7,13 +7,7 @@ from Cryptodome.Cipher import PKCS1_OAEP
 from Cryptodome.PublicKey import RSA
 from PyQt5.QtCore import QEvent, Qt, pyqtSlot
 from PyQt5.QtGui import QBrush, QColor, QStandardItem, QStandardItemModel
-from PyQt5.QtWidgets import (
-    QApplication,
-    QListView,
-    QMainWindow,
-    QMessageBox,
-    qApp,
-)
+from PyQt5.QtWidgets import QApplication, QListView, QMainWindow, QMessageBox, qApp
 
 sys.path.append("../")
 from client.add_contact import AddContactDialog

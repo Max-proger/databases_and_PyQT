@@ -33,7 +33,9 @@ class ServerMaker(type):
         # Если обнаружено использование недопустимого метода connect,
         # генерируем исключение:
         if "connect" in methods:
-            raise TypeError("Использование метода connect недопустимо в серверном классе")
+            raise TypeError(
+                "Использование метода connect недопустимо в серверном классе"
+            )
         # Если сокет не инициализировался константами SOCK_STREAM(TCP)
         # AF_INET(IPv4), тоже исключение.
         if not ("SOCK_STREAM" in attrs and "AF_INET" in attrs):
@@ -68,11 +70,15 @@ class ClientMaker(type):
         # socket бросаем исключение:
         for command in ("accept", "listen", "socket"):
             if command in methods:
-                raise TypeError("В классе обнаружено использование запрещённого метода")
+                raise TypeError(
+                    "В классе обнаружено использование запрещённого метода"
+                )
         # Вызов get_message или send_message из utils считаем корректным
         # использованием сокетов
         if "get_message" in methods or "send_message" in methods:
             pass
         else:
-            raise TypeError("Отсутствуют вызовы функций, работающих с сокетами.")
+            raise TypeError(
+                "Отсутствуют вызовы функций, работающих с сокетами."
+            )
         super().__init__(clsname, bases, clsdict)
